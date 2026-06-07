@@ -1,0 +1,23 @@
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Card {
+  id          String   @id @default(uuid()) @map("_id")
+  name        String
+  role        String   @default("Corretor de Imóveis")
+  creci       String?
+  phone       String
+  email       String
+  instagram   String?
+  linkedin    String?
+  website     String?
+  company     String?  @default("Mota Carvalho")
+  bio         String?
+  createdAt   DateTime @default(now())
+}
