@@ -1,10 +1,10 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 body {
-    background-color: #0f172a;
-    /* Slate 900 de fundo padrão para evitar piscar branco */
+    background-color: #020617;
+    /* bg-slate-950 */
+    color: #f8fafc;
+    /* text-slate-50 */
     margin: 0;
     font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
 }

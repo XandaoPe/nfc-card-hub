@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import "./globals.css"; // Certifique-se de que o globals.css existe nesta pasta ou ajuste o caminho
+import "./globals.css";
 
 export const metadata: Metadata = {
     title: "NFC Card Hub - Mota Carvalho",
@@ -13,7 +13,7 @@ export default function RootLayout({
 }>) {
     return (
         <html lang="pt-BR">
-            <body>
+            <body className="bg-slate-950 text-slate-100 antialiased">
                 {children}
             </body>
         </html>
