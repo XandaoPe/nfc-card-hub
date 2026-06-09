@@ -26,10 +26,19 @@ export default async function ViewCard({ params }: PageProps) {
                 {/* Banner Superior Executivo */}
                 <div className="h-32 bg-gradient-to-tr from-amber-600 to-amber-800 relative flex items-end justify-center pb-4">
                     {/* Avatar com a Inicial */}
+                    {/* Avatar - Mostra foto se existir, senão mostra a inicial */}
                     <div className="absolute -bottom-12 bg-slate-900 p-1.5 rounded-full shadow-xl">
-                        <div className="w-24 h-24 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center text-3xl font-extrabold text-white tracking-wider border border-amber-400/30">
-                            {card.name.charAt(0).toUpperCase()}
-                        </div>
+                        {card.avatarUrl ? (
+                            <img
+                                src={card. avatarUrl}
+                                alt={card.name}
+                                className="w-24 h-24 rounded-full object-cover border-2 border-amber-500/30"
+                            />
+                        ) : (
+                            <div className="w-24 h-24 bg-gradient-to-br from-amber-500 to-amber-700 rounded-full flex items-center justify-center text-3xl font-extrabold text-white tracking-wider border border-amber-400/30">
+                                {card.name.charAt(0).toUpperCase()}
+                            </div>
+                        )}
                     </div>
                 </div>
 

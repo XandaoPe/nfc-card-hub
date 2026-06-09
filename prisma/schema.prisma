@@ -17,7 +17,7 @@ model Card {
   instagram   String?
   linkedin    String?
   website     String?
-  company     String?  @default("Mota Carvalho")
+  company     String?
   bio         String?
   avatarUrl   String?
   createdAt   DateTime @default(now())
