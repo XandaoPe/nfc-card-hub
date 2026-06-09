@@ -142,13 +142,20 @@ export default async function ViewCard({ params }: PageProps) {
 
                         {/* LinkedIn (Opcional) */}
                         {card.linkedin && (
-                            <a href={card.linkedin} target="_blank" rel="noopener noreferrer" className="flex items-center gap-3.5 p-3.5 bg-slate-800/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl transition-all duration-200 group">
+                            <a
+                                href={card.linkedin.startsWith('http') ? card.linkedin : `https://${card.linkedin}`}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="flex items-center gap-3.5 p-3.5 bg-slate-800/50 hover:bg-slate-800 border border-slate-800 hover:border-slate-700 rounded-xl transition-all duration-200 group"
+                            >
                                 <div className="p-2 bg-slate-700/60 rounded-lg text-slate-300 group-hover:bg-amber-500 group-hover:text-slate-950 transition-all duration-200">
                                     <Linkedin size={18} />
                                 </div>
                                 <div className="truncate">
                                     <p className="text-[10px] font-bold text-slate-500 uppercase tracking-wider">LinkedIn Profissional</p>
-                                    <p className="text-sm text-slate-200 font-medium truncate">Acessar Perfil</p>
+                                    <p className="text-sm text-slate-200 font-medium truncate">
+                                        {card.linkedin.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '')}
+                                    </p>
                                 </div>
                             </a>
                         )}
