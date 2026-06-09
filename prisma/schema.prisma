@@ -19,5 +19,6 @@ model Card {
   website     String?
   company     String?  @default("Mota Carvalho")
   bio         String?
+  avatarUrl   String?
   createdAt   DateTime @default(now())
 }
