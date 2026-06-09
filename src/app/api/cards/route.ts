@@ -5,22 +5,26 @@ import { NextResponse } from 'next/server';
 export async function POST(request: Request) {
     try {
         const body = await request.json();
+
         const newCard = await prisma.card.create({
             data: {
                 name: body.name,
                 role: body.role,
-                creci: body.creci,
+                creci: body.creci || null,
                 phone: body.phone,
                 email: body.email,
-                instagram: body.instagram,
-                linkedin: body.linkedin,
-                website: body.website,
-                company: body.company,
-                bio: body.bio,
+                instagram: body.instagram || null,
+                linkedin: body.linkedin || null,
+                website: body.website || null,
+                company: body.company || null,
+                bio: body.bio || null,
+                avatarUrl: body.avatarUrl || null, // <-- FALTAVA ESSA LINHA AQUI!
             },
         });
+
         return NextResponse.json(newCard, { status: 201 });
     } catch (error) {
+        console.error("Erro no Prisma ao criar cartão:", error);
         return NextResponse.json({ error: 'Erro ao criar cartão.' }, { status: 500 });
     }
 }
@@ -33,6 +37,7 @@ export async function GET() {
         });
         return NextResponse.json(cards);
     } catch (error) {
+        console.error("Erro no Prisma ao buscar cartões:", error);
         return NextResponse.json({ error: 'Erro ao buscar cartões.' }, { status: 500 });
     }
 }
