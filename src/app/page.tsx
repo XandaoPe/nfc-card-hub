@@ -24,7 +24,7 @@ export default function AdminPanel() {
         instagram: '',
         website: '',
         linkedin: '',
-        avatarUrl: '', // Armazenará o Base64 da imagem
+        avatarUrl: '',
     });
 
     useEffect(() => {
@@ -32,60 +32,105 @@ export default function AdminPanel() {
     }, []);
 
     const fetchCards = async () => {
-        const res = await fetch('/api/cards');
-        if (res.ok) {
-            const data = await res.json();
-            setCards(data);
+        try {
+            const res = await fetch('/api/cards');
+            if (res.ok) {
+                const data = await res.json();
+                setCards(data);
+            }
+        } catch (err) {
+            console.error("Erro ao buscar cartões:", err);
         }
     };
 
-    // Função mágica para converter o arquivo de imagem em texto Base64
+    // Função para carregar, redimensionar e comprimir a foto automaticamente
     const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const file = e.target.files?.[0];
         if (!file) return;
 
-        // Validação básica de tamanho (limitar a 2MB para não estourar o limite do documento MongoDB)
-        if (file.size > 2 * 1024 * 1024) {
-            alert('A imagem é muito pesada! Escolha uma foto de até 2MB.');
-            return;
-        }
-
         setUploading(true);
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onloadend = () => {
-            setFormData({ ...formData, avatarUrl: reader.result as String | any });
+
+        reader.onload = (event) => {
+            const img = new Image();
+            img.src = event.target?.result as string;
+
+            img.onload = () => {
+                // Criar um canvas para redimensionar a imagem de forma leve
+                const canvas = document.createElement('canvas');
+                const MAX_WIDTH = 400;
+                const MAX_HEIGHT = 400;
+                let width = img.width;
+                let height = img.height;
+
+                if (width > height) {
+                    if (width > MAX_WIDTH) {
+                        height *= MAX_WIDTH / width;
+                        width = MAX_WIDTH;
+                    }
+                } else {
+                    if (height > MAX_HEIGHT) {
+                        width *= MAX_HEIGHT / height;
+                        height = MAX_HEIGHT;
+                    }
+                }
+
+                canvas.width = width;
+                canvas.height = height;
+                const ctx = canvas.getContext('2d');
+
+                if (ctx) {
+                    ctx.drawImage(img, 0, 0, width, height);
+                    // Converte para JPEG leve com 70% de qualidade
+                    const compressedBase64 = canvas.toDataURL('image/jpeg', 0.7);
+                    setFormData({ ...formData, avatarUrl: compressedBase64 });
+                }
+                setUploading(false);
+            };
+        };
+
+        reader.onerror = () => {
+            alert("Erro ao ler arquivo.");
             setUploading(false);
         };
     };
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        const res = await fetch('/api/cards', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(formData),
-        });
-
-        if (res.ok) {
-            setFormData({
-                name: '',
-                role: '',
-                creci: '',
-                company: '',
-                bio: '',
-                phone: '',
-                email: '',
-                instagram: '',
-                website: '',
-                linkedin: '',
-                avatarUrl: '',
+        try {
+            const res = await fetch('/api/cards', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
             });
-            // Limpa o campo de arquivo visualmente
-            const fileInput = document.getElementById('avatar-file') as HTMLInputElement;
-            if (fileInput) fileInput.value = '';
 
-            fetchCards();
+            if (res.ok) {
+                setFormData({
+                    name: '',
+                    role: '',
+                    creci: '',
+                    company: '',
+                    bio: '',
+                    phone: '',
+                    email: '',
+                    instagram: '',
+                    website: '',
+                    linkedin: '',
+                    avatarUrl: '',
+                });
+
+                const fileInput = document.getElementById('avatar-file') as HTMLInputElement;
+                if (fileInput) fileInput.value = '';
+
+                alert('Cartão profissional cadastrado com sucesso!');
+                fetchCards();
+            } else {
+                const errData = await res.json();
+                alert(`Erro do servidor: ${errData.error || 'Não foi possível salvar.'}`);
+            }
+        } catch (err) {
+            alert('Erro na conexão com o servidor ao salvar.');
         }
     };
 
@@ -98,7 +143,7 @@ export default function AdminPanel() {
                     <h2 className="text-xl font-bold mb-4 text-amber-500">Cadastrar Novo Cartão NFC</h2>
                     <form onSubmit={handleSubmit} className="space-y-4">
 
-                        {/* SEÇÃO DE UPLOAD DA FOTO */}
+                        {/* Campo de Upload Otimizado */}
                         <div className="bg-slate-800/40 p-4 rounded-xl border border-dashed border-slate-700 flex items-center gap-4">
                             <div className="relative w-16 h-16 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden flex-shrink-0">
                                 {formData.avatarUrl ? (
@@ -116,7 +161,7 @@ export default function AdminPanel() {
                                     onChange={handleFileChange}
                                     className="block w-full text-xs text-slate-400 file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-amber-500 file:text-slate-950 hover:file:bg-amber-400 file:cursor-pointer cursor-pointer"
                                 />
-                                <p className="text-[10px] text-slate-500 mt-1">Formatos aceitos: JPG, PNG. Máx: 2MB</p>
+                                <p className="text-[10px] text-slate-500 mt-1">Compressão automática ativada para fotos de alta resolução.</p>
                             </div>
                         </div>
 
@@ -178,7 +223,7 @@ export default function AdminPanel() {
                             disabled={uploading}
                             className="w-full bg-amber-500 hover:bg-amber-400 disabled:bg-slate-700 disabled:text-slate-500 text-slate-950 font-bold py-3 rounded-xl transition-all shadow-lg shadow-amber-500/10 cursor-pointer disabled:cursor-not-allowed"
                         >
-                            {uploading ? 'Processando foto...' : 'Salvar e Gerar Link NFC'}
+                            {uploading ? 'Otimizando imagem...' : 'Salvar e Gerar Link NFC'}
                         </button>
                     </form>
                 </div>
@@ -206,7 +251,7 @@ export default function AdminPanel() {
                                             <p className="text-xs text-slate-400">{card.role} {card.company ? `• ${card.company}` : ''}</p>
                                         </div>
                                     </div>
-                                    <button onClick={() => { navigator.clipboard.writeText(fullUrl); alert('Link copiado!'); }} className="bg-slate-700 hover:bg-slate-600 text-xs font-semibold py-2 px-4 rounded-lg transition-all text-amber-400 border border-slate-600 cursor-pointer">
+                                    <button onClick={() => { navigator.clipboard.writeText(fullUrl); alert('Link copied!'); }} className="bg-slate-700 hover:bg-slate-600 text-xs font-semibold py-2 px-4 rounded-lg transition-all text-amber-400 border border-slate-600 cursor-pointer">
                                         Copiar Link
                                     </button>
                                 </div>
