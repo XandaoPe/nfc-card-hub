@@ -20,33 +20,6 @@ export default async function ViewCard({ params }: PageProps) {
 
     const whatsappUrl = `https://wa.me/${card.phone.replace(/\D/g, '')}`;
 
-    // const generateVCard = () => {
-    //     const vCardData = [
-    //         'BEGIN:VCARD',
-    //         'VERSION:3.0',
-    //         `FN:${card.name}`,
-    //         `TITLE:${card.role}`,
-    //         `ORG:${card.company || ''}`,
-    //         `TEL;TYPE=WORK,CELL:${card.phone}`,
-    //         `EMAIL:${card.email}`,
-    //         card.instagram ? `URL;TYPE=Instagram:https://instagram.com/${card.instagram.replace('@', '')}` : '',
-    //         card.linkedin ? `URL;TYPE=LinkedIn:${card.linkedin.startsWith('http') ? card.linkedin : `https://${card.linkedin}`}` : '',
-    //         card.website ? `URL;TYPE=Website:${card.website.startsWith('http') ? card.website : `https://${card.website}`}` : '',
-    //         card.bio ? `NOTE:${card.bio}` : '',
-    //         'END:VCARD'
-    //     ].filter(line => line).join('\n');
-
-    //     const blob = new Blob([vCardData], { type: 'text/vcard' });
-    //     const url = URL.createObjectURL(blob);
-    //     const link = document.createElement('a');
-    //     link.href = url;
-    //     link.download = `${card.name.replace(/\s/g, '_')}_contato.vcf`;
-    //     document.body.appendChild(link);
-    //     link.click();
-    //     document.body.removeChild(link);
-    //     URL.revokeObjectURL(url);
-    // };
-
     return (
         <div className="min-h-screen bg-slate-950 flex justify-center items-center p-4 antialiased text-slate-100">
             <div className="w-full max-w-md bg-slate-900 rounded-3xl shadow-2xl overflow-hidden border border-slate-800 my-auto">
@@ -107,21 +80,16 @@ export default async function ViewCard({ params }: PageProps) {
                     )}
 
                     {/* Botão de Ação Principal (WhatsApp Call-to-Action) */}
-                    <div className="mt-6 px-2">
-                        <a
-                            href={whatsappUrl}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition-all duration-200 shadow-lg shadow-emerald-950/50 transform active:scale-95 text-base tracking-wide"
-                        >
+                    <div className="mt-6 space-y-3 px-2">
+                        {/* WhatsApp */}
+                        <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="flex items-center justify-center gap-2 w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-4 rounded-xl transition-all duration-200 shadow-lg shadow-emerald-950/50 transform active:scale-95 text-base tracking-wide">
                             <Phone size={18} />
                             Falar no WhatsApp
                         </a>
+
+                        {/* Botão Salvar Contato */}
+                        <VCardButton card={card} />
                     </div>
-
-                    {/* Botão Salvar Contato */}
-
-                    <VCardButton card={card} />
 
                     <div className="relative my-6">
                         <div className="absolute inset-0 flex items-center" aria-hidden="true">
