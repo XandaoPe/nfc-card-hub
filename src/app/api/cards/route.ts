@@ -18,7 +18,7 @@ export async function POST(request: Request) {
                 website: body.website || null,
                 company: body.company || null,
                 bio: body.bio || null,
-                avatarUrl: body.avatarUrl || null, // <-- FALTAVA ESSA LINHA AQUI!
+                avatarUrl: body.avatarUrl || null,
             },
         });
 
