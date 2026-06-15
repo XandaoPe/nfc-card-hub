@@ -9,6 +9,7 @@ interface VCardButtonProps {
         company?: string | null;
         bio?: string | null;
         instagram?: string | null;
+        facebook?: string | null; // <--- ADICIONADO AQUI
         linkedin?: string | null;
         website?: string | null;
     };
@@ -25,6 +26,7 @@ export default function VCardButton({ card }: VCardButtonProps) {
             `TEL;TYPE=WORK,CELL:${card.phone}`,
             `EMAIL:${card.email}`,
             card.instagram ? `URL;TYPE=Instagram:https://instagram.com/${card.instagram.replace('@', '')}` : '',
+            card.facebook ? `URL;TYPE=Facebook:${card.facebook.startsWith('http') ? card.facebook : `https://facebook.com/${card.facebook}`}` : '', // <--- ADICIONADO AQUI
             card.linkedin ? `URL;TYPE=LinkedIn:${card.linkedin.startsWith('http') ? card.linkedin : `https://${card.linkedin}`}` : '',
             card.website ? `URL;TYPE=Website:${card.website.startsWith('http') ? card.website : `https://${card.website}`}` : '',
             card.bio ? `NOTE:${card.bio}` : '',

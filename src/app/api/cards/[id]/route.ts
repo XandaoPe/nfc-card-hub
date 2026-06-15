@@ -19,6 +19,7 @@ export async function PUT(
                 phone: body.phone,
                 email: body.email,
                 instagram: body.instagram || null,
+                facebook: body.facebook || null,
                 linkedin: body.linkedin || null,
                 website: body.website || null,
                 company: body.company || null,

@@ -15,6 +15,7 @@ model Card {
   phone       String
   email       String
   instagram   String?
+  facebook    String?  
   linkedin    String?
   website     String?
   company     String?
