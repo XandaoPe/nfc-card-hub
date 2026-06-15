@@ -15,6 +15,7 @@ interface Card {
     instagram?: string;
     website?: string;
     linkedin?: string;
+    facebook?: string; // Adicionado campo opcional na Interface
     avatarUrl?: string;
 }
 
@@ -37,6 +38,7 @@ export default function AdminPanel() {
         instagram: '',
         website: '',
         linkedin: '',
+        facebook: '', // Inicializado no estado do formulário
         avatarUrl: '',
     });
 
@@ -158,6 +160,7 @@ export default function AdminPanel() {
             instagram: card.instagram || '',
             website: card.website || '',
             linkedin: card.linkedin || '',
+            facebook: card.facebook || '', // Atribuído na edição
             avatarUrl: card.avatarUrl || '',
         });
         setIsModalOpen(true);
@@ -194,6 +197,7 @@ export default function AdminPanel() {
             instagram: '',
             website: '',
             linkedin: '',
+            facebook: '', // Limpo no reset
             avatarUrl: '',
         });
         const fileInput = document.getElementById('avatar-file') as HTMLInputElement;
@@ -234,9 +238,9 @@ export default function AdminPanel() {
                     <div className="lg:col-span-1 bg-slate-900 p-6 rounded-2xl border border-slate-800 h-fit">
                         <h2 className="text-xl font-bold mb-4 text-amber-500">Cadastrar Novo Cartão</h2>
                         <form onSubmit={handleSubmit} className="space-y-4">
-                            {/* Upload da foto - mesmo código existente */}
+
+                            {/* Upload da foto */}
                             <div className="bg-slate-800/40 p-4 rounded-xl border border-dashed border-slate-700">
-                                {/* ... mantenha o código do upload igual ... */}
                                 <div className="flex items-center gap-4">
                                     <div className="relative w-16 h-16 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden flex-shrink-0">
                                         {formData.avatarUrl ? (
@@ -258,7 +262,6 @@ export default function AdminPanel() {
                                 </div>
                             </div>
 
-                            {/* Campos do formulário - mesmo código existente */}
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-xs font-semibold uppercase text-slate-400 mb-1">Nome Completo *</label>
@@ -297,18 +300,23 @@ export default function AdminPanel() {
                                 <textarea value={formData.bio} onChange={e => setFormData({ ...formData, bio: e.target.value })} rows={2} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500" />
                             </div>
 
-                            <div className="grid grid-cols-3 gap-3">
+                            {/* Grid Redes Sociais Atualizado para 4 Colunas */}
+                            <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                 <div>
                                     <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">Instagram</label>
-                                    <input type="text" value={formData.instagram} onChange={e => setFormData({ ...formData, instagram: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm" />
+                                    <input type="text" value={formData.instagram} onChange={e => setFormData({ ...formData, instagram: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-amber-500" />
                                 </div>
                                 <div>
                                     <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">Website</label>
-                                    <input type="text" value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm" />
+                                    <input type="text" value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-amber-500" />
                                 </div>
                                 <div>
                                     <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">LinkedIn</label>
-                                    <input type="text" value={formData.linkedin} onChange={e => setFormData({ ...formData, linkedin: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm" />
+                                    <input type="text" value={formData.linkedin} onChange={e => setFormData({ ...formData, linkedin: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-amber-500" />
+                                </div>
+                                <div>
+                                    <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">Facebook</label>
+                                    <input type="text" value={formData.facebook} onChange={e => setFormData({ ...formData, facebook: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-amber-500" placeholder="URL do Facebook" />
                                 </div>
                             </div>
 
@@ -410,7 +418,8 @@ export default function AdminPanel() {
 
                         <div className="p-6">
                             <form onSubmit={handleSubmit} className="space-y-4">
-                                {/* Mesmo formulário de cadastro */}
+
+                                {/* Upload da foto dentro do modal */}
                                 <div className="bg-slate-800/40 p-4 rounded-xl border border-dashed border-slate-700">
                                     <div className="flex items-center gap-4">
                                         <div className="relative w-16 h-16 rounded-full bg-slate-800 border border-slate-700 flex items-center justify-center overflow-hidden flex-shrink-0">
@@ -470,18 +479,23 @@ export default function AdminPanel() {
                                     <textarea value={formData.bio} onChange={e => setFormData({ ...formData, bio: e.target.value })} rows={2} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500" />
                                 </div>
 
-                                <div className="grid grid-cols-3 gap-3">
+                                {/* Grid Redes Sociais no Modal Atualizado para 4 Colunas */}
+                                <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
                                     <div>
                                         <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">Instagram</label>
-                                        <input type="text" value={formData.instagram} onChange={e => setFormData({ ...formData, instagram: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm" />
+                                        <input type="text" value={formData.instagram} onChange={e => setFormData({ ...formData, instagram: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-amber-500" />
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">Website</label>
-                                        <input type="text" value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm" />
+                                        <input type="text" value={formData.website} onChange={e => setFormData({ ...formData, website: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-amber-500" />
                                     </div>
                                     <div>
                                         <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">LinkedIn</label>
-                                        <input type="text" value={formData.linkedin} onChange={e => setFormData({ ...formData, linkedin: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm" />
+                                        <input type="text" value={formData.linkedin} onChange={e => setFormData({ ...formData, linkedin: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-amber-500" />
+                                    </div>
+                                    <div>
+                                        <label className="block text-[10px] font-bold uppercase text-slate-500 mb-1">Facebook</label>
+                                        <input type="text" value={formData.facebook} onChange={e => setFormData({ ...formData, facebook: e.target.value })} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2 text-sm text-white focus:outline-none focus:border-amber-500" placeholder="URL do Facebook" />
                                     </div>
                                 </div>
 
