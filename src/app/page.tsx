@@ -299,6 +299,7 @@ export default function AdminPanel() {
                                 <label className="block text-xs font-semibold uppercase text-slate-400 mb-1">Bio</label>
                                 <textarea value={formData.bio} onChange={e => setFormData({ ...formData, bio: e.target.value })} rows={2} className="w-full bg-slate-800 border border-slate-700 rounded-lg p-2.5 text-white focus:outline-none focus:border-amber-500" />
                             </div>
+                            
 
                             {/* Grid Redes Sociais Atualizado para 4 Colunas */}
                             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
